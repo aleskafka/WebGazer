@@ -1,5 +1,5 @@
 (function(window) {
-    'use strict';
+    "use strict";
 
     window.webgazer = window.webgazer || {};
     webgazer.tracker = webgazer.tracker || {};
@@ -14,6 +14,7 @@
     var ClmGaze = function() {
         this.clm = new clm.tracker(webgazer.params.camConstraints);
         this.clm.init(pModel);
+
         var F = [ [1, 0, 0, 0, 1, 0],
                   [0, 1, 0, 0, 0, 1],
                   [0, 0, 1, 0, 1, 0],
@@ -46,20 +47,35 @@
 
     webgazer.tracker.ClmGaze = ClmGaze;
 
+
+    ClmGaze.prototype.start = function(imageCanvas) {
+      this.clm.start(imageCanvas);
+      this.imageCanvas = imageCanvas;
+    }
+
+
+    ClmGaze.prototype.stop = function() {
+      this.clm.stop();
+    }
+
+
+    ClmGaze.prototype.isFaceDetected = function() {
+      return !!this.clm.getCurrentPosition();
+    }
+
+
     /**
      * Isolates the two patches that correspond to the user's eyes
      * @param  {Canvas} imageCanvas - canvas corresponding to the webcam stream
-     * @param  {Number} width - of imageCanvas
-     * @param  {Number} height - of imageCanvas
      * @return {Object} the two eye-patches, first left, then right eye
      */
-    ClmGaze.prototype.getEyePatches = function(imageCanvas, width, height) {
+    ClmGaze.prototype.getEyePatches = function() {
 
-        if (imageCanvas.width === 0) {
+        if (this.imageCanvas.width === 0) {
             return null;
         }
 
-        var positions = this.clm.track(imageCanvas);
+        var positions = this.clm.getCurrentPosition();
         var score = this.clm.getScore();
 
         if (!positions) {
@@ -98,12 +114,12 @@
         }
 
         if (leftHeight === 0 || rightHeight === 0){
-          console.log('an eye patch had zero height');
+          console.log("an eye patch had zero height");
           return null;
         }
 
         var eyeObjs = {};
-        var leftImageData = imageCanvas.getContext('2d').getImageData(leftOriginX, leftOriginY, leftWidth, leftHeight);
+        var leftImageData = this.imageCanvas.getContext('2d').getImageData(leftOriginX, leftOriginY, leftWidth, leftHeight);
         eyeObjs.left = {
             patch: leftImageData,
             imagex: leftOriginX,
@@ -112,7 +128,7 @@
             height: leftHeight
         };
 
-        var rightImageData = imageCanvas.getContext('2d').getImageData(rightOriginX, rightOriginY, rightWidth, rightHeight);
+        var rightImageData = this.imageCanvas.getContext('2d').getImageData(rightOriginX, rightOriginY, rightWidth, rightHeight);
         eyeObjs.right = {
             patch: rightImageData,
             imagex: rightOriginX,
@@ -131,5 +147,5 @@
      * @type {string}
      */
     ClmGaze.prototype.name = 'clmtrackr';
-    
+
 }(window));

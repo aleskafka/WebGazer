@@ -13,6 +13,6 @@ for FILE in $(cat toCombine)
 do
     echo $FILE
     cat $FILE >> $FILENAME
-    echo -e ';\n' >> $FILENAME
+    echo ';\n' >> $FILENAME
 done
 
