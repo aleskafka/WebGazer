@@ -117,16 +117,16 @@
     };
 
     self.webgazer.util.threshold = function(data, threshold) {
-      for (let i = 0; i < data.length; i++) {
+      for (var i = 0; i < data.length; i++) {
         data[i] = (data[i] > threshold) ? 255 : 0;
       }
       return data;
     };
 
     self.webgazer.util.correlation = function(data1, data2) {
-      const length = Math.min(data1.length, data2.length);
-      let count = 0;
-      for (let i = 0; i < length; i++) {
+      var length = Math.min(data1.length, data2.length);
+      var count = 0;
+      for (var i = 0; i < length; i++) {
         if (data1[i] === data2[i]) {
           count++;
         }

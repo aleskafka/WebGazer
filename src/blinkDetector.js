@@ -1,13 +1,14 @@
 (function(window) {
     'use strict';
-    
+
     window.webgazer = window.webgazer || {};
 
-    const defaultWindowSize = 8;
-    const equalizeStep = 5;
-    const threshold = 80;
-    const minCorrelation = 0.78;
-    const maxCorrelation = 0.85;
+
+    var defaultWindowSize = 8;
+    var equalizeStep = 5;
+    var threshold = 80;
+    var minCorrelation = 0.78;
+    var maxCorrelation = 0.85;
 
     /**
      * Constructor for BlinkDetector
@@ -21,10 +22,10 @@
     };
 
     webgazer.BlinkDetector.prototype.extractBlinkData = function(eyesObj) {
-        const eye = eyesObj.right;
-        const grayscaled = webgazer.util.grayscale(eye.patch.data, eye.width, eye.height);
-        const equalized = webgazer.util.equalizeHistogram(grayscaled, equalizeStep, grayscaled);
-        const thresholded = webgazer.util.threshold(equalized, threshold);
+        var eye = eyesObj.right;
+        var grayscaled = webgazer.util.grayscale(eye.patch.data, eye.width, eye.height);
+        var equalized = webgazer.util.equalizeHistogram(grayscaled, equalizeStep, grayscaled);
+        var thresholded = webgazer.util.threshold(equalized, threshold);
         return {
             data: thresholded,
             width: eye.width,
@@ -37,10 +38,10 @@
     }
 
     webgazer.BlinkDetector.prototype.isBlink = function(oldEye, newEye) {
-        let correlation = 0;
-        for (let i = 0; i < this.blinkWindow; i++) {
-            const data = this.blinkData.get(i);
-            const nextData = this.blinkData.get(i + 1);
+        var correlation = 0;
+        for (var i = 0; i < this.blinkWindow; i++) {
+            var data = this.blinkData.get(i);
+            var nextData = this.blinkData.get(i + 1);
             if (!this.isSameEye(data, nextData)) {
                 return false;
             }
@@ -60,7 +61,7 @@
             return eyesObj;
         }
 
-        const data = this.extractBlinkData(eyesObj);
+        var data = this.extractBlinkData(eyesObj);
         this.blinkData.push(data);
 
         eyesObj.left.blink = false;

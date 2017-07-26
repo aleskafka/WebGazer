@@ -15467,7 +15467,7 @@ var LOGGING_ENABLED = true;
  * Wrapped logging function.
  * @param {string} msg The message to log.
  */
-const log = function (msg) {
+var log = function (msg) {
   if (!LOGGING_ENABLED) { return; }
   if (window.console && window.console.log) {
     window.console.log(msg);
@@ -15478,7 +15478,7 @@ const log = function (msg) {
  * Wrapped logging function.
  * @param {string} msg The message to log.
  */
-const error = function (msg) {
+var error = function (msg) {
   if (!LOGGING_ENABLED) { return; }
   if (window.console) {
     if (window.console.error) {
@@ -15493,7 +15493,7 @@ const error = function (msg) {
 /**
  * Turn off all logging.
  */
-const loggingOff = function () {
+var loggingOff = function () {
   LOGGING_ENABLED = false;
 };
 
@@ -15501,7 +15501,7 @@ const loggingOff = function () {
  * Check if the page is embedded.
  * @return {boolean} True of we are in an iframe
  */
-const isInIFrame = function () {
+var isInIFrame = function () {
   return window !== window.top;
 };
 
@@ -15511,7 +15511,7 @@ const isInIFrame = function () {
  * @param {number} value The enum value.
  * @return {string} The enum as a string.
  */
-const glEnumToString = function (gl, value) {
+var glEnumToString = function (gl, value) {
   for (var p in gl) {
     if (gl[p] === value) {
       return p;
@@ -15527,7 +15527,7 @@ const glEnumToString = function (gl, value) {
  *        canvas.
  * @return {string} The html.
  */
-const makeFailHTML = function (msg) {
+var makeFailHTML = function (msg) {
   return '' +
     '<table style="background-color: #8CE; width: 100%; height: 100%;"><tr>' +
     '<td align="center">' +
@@ -15566,7 +15566,7 @@ const makeFailHTML = function (msg) {
  *     creation attributes you want to pass in.
  * @return {WebGLRenderingContext} The created context.
  */
-const setupWebGL = function (canvas, optAttribs) {
+var setupWebGL = function (canvas, optAttribs) {
   // const showLink = function (str) {
   //   var container = canvas.parentNode;
   //   if (container) {
@@ -15594,7 +15594,7 @@ const setupWebGL = function (canvas, optAttribs) {
  *     from. If one is not passed in one will be created.
  * @return {!WebGLContext} The created context.
  */
-const create3DContext = function (canvas, optAttribs) {
+var create3DContext = function (canvas, optAttribs) {
   var names = ['webgl', 'experimental-webgl'];
   var context = null;
   for (var ii = 0; ii < names.length; ++ii) {
@@ -15608,7 +15608,7 @@ const create3DContext = function (canvas, optAttribs) {
   return context;
 };
 
-const updateCSSIfInIFrame = function () {
+var updateCSSIfInIFrame = function () {
   if (isInIFrame()) {
     document.body.className = 'iframe';
   }
@@ -15618,7 +15618,7 @@ const updateCSSIfInIFrame = function () {
  * Gets a WebGL context.
  * makes its backing store the size it is displayed.
  */
-const getWebGLContext = function (canvas) {
+var getWebGLContext = function (canvas) {
   if (isInIFrame()) {
     updateCSSIfInIFrame();
 
@@ -15640,7 +15640,7 @@ const getWebGLContext = function (canvas) {
  * @param {function(string): void) optErrorCallback callback for errors.
  * @return {!WebGLShader} The created shader.
  */
-const loadShader = function (gl, shaderSource, shaderType, optErrorCallback) {
+var loadShader = function (gl, shaderSource, shaderType, optErrorCallback) {
   var errFn = optErrorCallback || error;
   // Create the shader object
   var shader = gl.createShader(shaderType);
@@ -15672,7 +15672,7 @@ const loadShader = function (gl, shaderSource, shaderType, optErrorCallback) {
  * @param {!Array.<string>} optAttribs The attribs names.
  * @param {!Array.<number>} optLocations The locations for the attribs.
  */
-const loadProgram = function (gl, shaders, optAttribs, optLocations) {
+var loadProgram = function (gl, shaders, optAttribs, optLocations) {
   var program = gl.createProgram();
   for (var i = 0; i < shaders.length; ++i) {
     gl.attachShader(program, shaders[i]);
@@ -15688,10 +15688,10 @@ const loadProgram = function (gl, shaders, optAttribs, optLocations) {
   gl.linkProgram(program);
 
   // Check the link status
-  const linked = gl.getProgramParameter(program, gl.LINK_STATUS);
+  var linked = gl.getProgramParameter(program, gl.LINK_STATUS);
   if (!linked) {
     // something went wrong with the link
-    const lastError = gl.getProgramInfoLog(program);
+    var lastError = gl.getProgramInfoLog(program);
     error('Error in program linking:' + lastError);
 
     gl.deleteProgram(program);
@@ -15710,7 +15710,7 @@ const loadProgram = function (gl, shaders, optAttribs, optLocations) {
  * @param {function(string): void) optErrorCallback callback for errors.
  * @return {!WebGLShader} The created shader.
  */
-const createShaderFromScript = function (
+var createShaderFromScript = function (
   gl, scriptId, optShaderType, optErrorCallback
 ) {
   var shaderSource = '';
@@ -19154,14 +19154,15 @@ var pModel = {
 
 (function(window) {
     'use strict';
-    
+
     window.webgazer = window.webgazer || {};
 
-    const defaultWindowSize = 8;
-    const equalizeStep = 5;
-    const threshold = 80;
-    const minCorrelation = 0.78;
-    const maxCorrelation = 0.85;
+
+    var defaultWindowSize = 8;
+    var equalizeStep = 5;
+    var threshold = 80;
+    var minCorrelation = 0.78;
+    var maxCorrelation = 0.85;
 
     /**
      * Constructor for BlinkDetector
@@ -19175,10 +19176,10 @@ var pModel = {
     };
 
     webgazer.BlinkDetector.prototype.extractBlinkData = function(eyesObj) {
-        const eye = eyesObj.right;
-        const grayscaled = webgazer.util.grayscale(eye.patch.data, eye.width, eye.height);
-        const equalized = webgazer.util.equalizeHistogram(grayscaled, equalizeStep, grayscaled);
-        const thresholded = webgazer.util.threshold(equalized, threshold);
+        var eye = eyesObj.right;
+        var grayscaled = webgazer.util.grayscale(eye.patch.data, eye.width, eye.height);
+        var equalized = webgazer.util.equalizeHistogram(grayscaled, equalizeStep, grayscaled);
+        var thresholded = webgazer.util.threshold(equalized, threshold);
         return {
             data: thresholded,
             width: eye.width,
@@ -19191,10 +19192,10 @@ var pModel = {
     }
 
     webgazer.BlinkDetector.prototype.isBlink = function(oldEye, newEye) {
-        let correlation = 0;
-        for (let i = 0; i < this.blinkWindow; i++) {
-            const data = this.blinkData.get(i);
-            const nextData = this.blinkData.get(i + 1);
+        var correlation = 0;
+        for (var i = 0; i < this.blinkWindow; i++) {
+            var data = this.blinkData.get(i);
+            var nextData = this.blinkData.get(i + 1);
             if (!this.isSameEye(data, nextData)) {
                 return false;
             }
@@ -19214,7 +19215,7 @@ var pModel = {
             return eyesObj;
         }
 
-        const data = this.extractBlinkData(eyesObj);
+        var data = this.extractBlinkData(eyesObj);
         this.blinkData.push(data);
 
         eyesObj.left.blink = false;
@@ -21349,16 +21350,16 @@ var pModel = {
     };
 
     self.webgazer.util.threshold = function(data, threshold) {
-      for (let i = 0; i < data.length; i++) {
+      for (var i = 0; i < data.length; i++) {
         data[i] = (data[i] > threshold) ? 255 : 0;
       }
       return data;
     };
 
     self.webgazer.util.correlation = function(data1, data2) {
-      const length = Math.min(data1.length, data2.length);
-      let count = 0;
-      for (let i = 0; i < length; i++) {
+      var length = Math.min(data1.length, data2.length);
+      var count = 0;
+      for (var i = 0; i < length; i++) {
         if (data1[i] === data2[i]) {
           count++;
         }

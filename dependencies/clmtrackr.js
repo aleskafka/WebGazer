@@ -12212,7 +12212,7 @@ var LOGGING_ENABLED = true;
  * Wrapped logging function.
  * @param {string} msg The message to log.
  */
-const log = function (msg) {
+var log = function (msg) {
   if (!LOGGING_ENABLED) { return; }
   if (window.console && window.console.log) {
     window.console.log(msg);
@@ -12223,7 +12223,7 @@ const log = function (msg) {
  * Wrapped logging function.
  * @param {string} msg The message to log.
  */
-const error = function (msg) {
+var error = function (msg) {
   if (!LOGGING_ENABLED) { return; }
   if (window.console) {
     if (window.console.error) {
@@ -12238,7 +12238,7 @@ const error = function (msg) {
 /**
  * Turn off all logging.
  */
-const loggingOff = function () {
+var loggingOff = function () {
   LOGGING_ENABLED = false;
 };
 
@@ -12246,7 +12246,7 @@ const loggingOff = function () {
  * Check if the page is embedded.
  * @return {boolean} True of we are in an iframe
  */
-const isInIFrame = function () {
+var isInIFrame = function () {
   return window !== window.top;
 };
 
@@ -12256,7 +12256,7 @@ const isInIFrame = function () {
  * @param {number} value The enum value.
  * @return {string} The enum as a string.
  */
-const glEnumToString = function (gl, value) {
+var glEnumToString = function (gl, value) {
   for (var p in gl) {
     if (gl[p] === value) {
       return p;
@@ -12272,7 +12272,7 @@ const glEnumToString = function (gl, value) {
  *        canvas.
  * @return {string} The html.
  */
-const makeFailHTML = function (msg) {
+var makeFailHTML = function (msg) {
   return '' +
     '<table style="background-color: #8CE; width: 100%; height: 100%;"><tr>' +
     '<td align="center">' +
@@ -12311,7 +12311,7 @@ const makeFailHTML = function (msg) {
  *     creation attributes you want to pass in.
  * @return {WebGLRenderingContext} The created context.
  */
-const setupWebGL = function (canvas, optAttribs) {
+var setupWebGL = function (canvas, optAttribs) {
   // const showLink = function (str) {
   //   var container = canvas.parentNode;
   //   if (container) {
@@ -12339,7 +12339,7 @@ const setupWebGL = function (canvas, optAttribs) {
  *     from. If one is not passed in one will be created.
  * @return {!WebGLContext} The created context.
  */
-const create3DContext = function (canvas, optAttribs) {
+var create3DContext = function (canvas, optAttribs) {
   var names = ['webgl', 'experimental-webgl'];
   var context = null;
   for (var ii = 0; ii < names.length; ++ii) {
@@ -12353,7 +12353,7 @@ const create3DContext = function (canvas, optAttribs) {
   return context;
 };
 
-const updateCSSIfInIFrame = function () {
+var updateCSSIfInIFrame = function () {
   if (isInIFrame()) {
     document.body.className = 'iframe';
   }
@@ -12363,7 +12363,7 @@ const updateCSSIfInIFrame = function () {
  * Gets a WebGL context.
  * makes its backing store the size it is displayed.
  */
-const getWebGLContext = function (canvas) {
+var getWebGLContext = function (canvas) {
   if (isInIFrame()) {
     updateCSSIfInIFrame();
 
@@ -12385,7 +12385,7 @@ const getWebGLContext = function (canvas) {
  * @param {function(string): void) optErrorCallback callback for errors.
  * @return {!WebGLShader} The created shader.
  */
-const loadShader = function (gl, shaderSource, shaderType, optErrorCallback) {
+var loadShader = function (gl, shaderSource, shaderType, optErrorCallback) {
   var errFn = optErrorCallback || error;
   // Create the shader object
   var shader = gl.createShader(shaderType);
@@ -12417,7 +12417,7 @@ const loadShader = function (gl, shaderSource, shaderType, optErrorCallback) {
  * @param {!Array.<string>} optAttribs The attribs names.
  * @param {!Array.<number>} optLocations The locations for the attribs.
  */
-const loadProgram = function (gl, shaders, optAttribs, optLocations) {
+var loadProgram = function (gl, shaders, optAttribs, optLocations) {
   var program = gl.createProgram();
   for (var i = 0; i < shaders.length; ++i) {
     gl.attachShader(program, shaders[i]);
@@ -12433,10 +12433,10 @@ const loadProgram = function (gl, shaders, optAttribs, optLocations) {
   gl.linkProgram(program);
 
   // Check the link status
-  const linked = gl.getProgramParameter(program, gl.LINK_STATUS);
+  var linked = gl.getProgramParameter(program, gl.LINK_STATUS);
   if (!linked) {
     // something went wrong with the link
-    const lastError = gl.getProgramInfoLog(program);
+    var lastError = gl.getProgramInfoLog(program);
     error('Error in program linking:' + lastError);
 
     gl.deleteProgram(program);
@@ -12455,7 +12455,7 @@ const loadProgram = function (gl, shaders, optAttribs, optLocations) {
  * @param {function(string): void) optErrorCallback callback for errors.
  * @return {!WebGLShader} The created shader.
  */
-const createShaderFromScript = function (
+var createShaderFromScript = function (
   gl, scriptId, optShaderType, optErrorCallback
 ) {
   var shaderSource = '';
