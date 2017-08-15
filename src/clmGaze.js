@@ -13,6 +13,17 @@
      */
     var ClmGaze = function() {
         this.clm = new clm.tracker(webgazer.params.camConstraints);
+        this.ec = new emotionClassifier();
+        this.ec.init(emotionModel);
+
+        if (pModel.shapeModel.nonRegularizedVectors.indexOf(9)===-1) {
+            pModel.shapeModel.nonRegularizedVectors.push(9);
+        }
+
+        if (pModel.shapeModel.nonRegularizedVectors.indexOf(11)===-1) {
+            pModel.shapeModel.nonRegularizedVectors.push(11);
+        }
+
         this.clm.init(pModel);
 
         var F = [ [1, 0, 0, 0, 1, 0],
@@ -61,6 +72,27 @@
 
     ClmGaze.prototype.isFaceDetected = function() {
       return !!this.clm.getCurrentPosition();
+    }
+
+
+    ClmGaze.prototype.getEmotions = function(min) {
+      if (this.imageCanvas.width === 0) {
+          return {};
+      }
+
+      var emotions = {};
+
+      if (this.clm.getCurrentPosition()) {
+        var er = this.ec.meanPredict(this.clm.getCurrentParameters()) || [];
+
+        for (var i = 0;i < er.length;i++) {
+          if (er[i].value > parseFloat(min||0, 10)) {
+            emotions[er[i].emotion] = er[i].value;
+          }
+        }
+      }
+
+      return emotions;
     }
 
 
