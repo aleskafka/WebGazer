@@ -1,5 +1,4 @@
 (function(window, undefined) {
-    console.log('initializing webgazer');
     //strict mode for type safety
     'use strict';
 
@@ -55,7 +54,7 @@
     //Types that regression systems should handle
     //Describes the source of data so that regression systems may ignore or handle differently the various generating events
     var eventTypes = ['click', 'move'];
-    
+
     //movelistener timeout clock parameters
     var moveClock = performance.now();
     webgazer.params.moveTickSize = 50; //milliseconds
@@ -88,7 +87,7 @@
         'settings': {}
     };
 
-    
+
     //PRIVATE FUNCTIONS
 
     /**
@@ -324,7 +323,7 @@
         loop();
     }
 
-    
+
     //PUBLIC FUNCTIONS - CONTROL
 
     /**
@@ -420,7 +419,7 @@
         return webgazer;
     };
 
-    
+
     //PUBLIC FUNCTIONS - DEBUG
 
     /**
@@ -486,7 +485,7 @@
         return webgazer;
     };
 
-    
+
     //SETTERS
     /**
      * Sets the tracking module
@@ -548,7 +547,7 @@
             return new constructor();
         };
     };
-    
+
     /**
      * Adds a new regression module to the list of regression modules, seeding its data from the first regression module
      * @param {string} name - the string name of the regression module to add
@@ -581,7 +580,7 @@
         return webgazer;
     };
 
-    
+
     //GETTERS
     /**
      * Returns the tracker currently in use
@@ -614,5 +613,5 @@
     webgazer.params.getEventTypes = function() {
         return eventTypes.slice();
     }
-    
+
 }(window));
