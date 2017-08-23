@@ -6,7 +6,7 @@
 ../dependencies/tracking.js/build/data/eye-min.js
 ../dependencies/numeric-1.2.6.min.js
 ../dependencies/clmtrackr.js
-../dependencies/clmtrackr/model_pca_20_svm.js
+../dependencies/clmtrackr/model_pca_20_svm_custom.js
 ../dependencies/emotions/model.js
 ../dependencies/emotions/classifier.js
 ../src/blinkDetector.js
